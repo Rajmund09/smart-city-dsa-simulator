@@ -28,7 +28,6 @@ smart-city-dsa-simulator/
 │
 └── .vscode/
 
-
 ---
 
 ## ⚙ Build & Run
