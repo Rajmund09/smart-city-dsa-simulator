@@ -4,10 +4,8 @@
 #include <algorithm>
 #include <limits>
 
-using namespace std;
-
-void Graph::addEdge(const string& from,
-                    const string& to,
+void Graph::addEdge(const std::string& from,
+                    const std::string& to,
                     int weight) {
 
     adjList[from].push_back({to, weight});
@@ -17,32 +15,34 @@ void Graph::addEdge(const string& from,
     }
 }
 
-const unordered_map<string, vector<pair<string,int>>>&
-Graph::getAdjList() const {
+const std::unordered_map<
+    std::string,
+    std::vector<std::pair<std::string,int>>
+>& Graph::getAdjList() const {
     return adjList;
 }
 
-vector<string> Graph::bfs(const string& start) {
+std::vector<std::string> Graph::bfs(const std::string& start) {
 
     if (adjList.find(start) == adjList.end())
-        throw invalid_argument("Start node does not exist.");
+        throw std::invalid_argument("Start node does not exist.");
 
-    unordered_set<string> visited;
-    queue<string> q;
-    vector<string> traversal;
+    std::unordered_set<std::string> visited;
+    std::queue<std::string> q;
+    std::vector<std::string> traversal;
 
     visited.insert(start);
     q.push(start);
 
     while (!q.empty()) {
 
-        string current = q.front();
+        std::string current = q.front();
         q.pop();
 
         traversal.push_back(current);
 
         for (const auto& edge : adjList[current]) {
-            const string& neighbor = edge.first;
+            const std::string& neighbor = edge.first;
 
             if (!visited.count(neighbor)) {
                 visited.insert(neighbor);
@@ -54,44 +54,45 @@ vector<string> Graph::bfs(const string& start) {
     return traversal;
 }
 
-vector<string> Graph::dfs(const string& start) {
+std::vector<std::string> Graph::dfs(const std::string& start) {
 
     if (adjList.find(start) == adjList.end())
-        throw invalid_argument("Start node does not exist.");
+        throw std::invalid_argument("Start node does not exist.");
 
-    unordered_set<string> visited;
-    vector<string> traversal;
+    std::unordered_set<std::string> visited;
+    std::vector<std::string> traversal;
 
     dfsHelper(start, visited, traversal);
     return traversal;
 }
 
-void Graph::dfsHelper(const string& node,
-                      unordered_set<string>& visited,
-                      vector<string>& traversal) {
+void Graph::dfsHelper(const std::string& node,
+                      std::unordered_set<std::string>& visited,
+                      std::vector<std::string>& traversal) {
 
     visited.insert(node);
     traversal.push_back(node);
 
     for (const auto& edge : adjList[node]) {
-        const string& neighbor = edge.first;
+        const std::string& neighbor = edge.first;
 
         if (!visited.count(neighbor)) {
             dfsHelper(neighbor, visited, traversal);
         }
     }
 }
+
 Graph::PathResult
-Graph::shortestPath(const string& start,
-                    const string& end) {
+Graph::shortestPath(const std::string& start,
+                    const std::string& end) {
 
     if (!adjList.count(start) || !adjList.count(end))
-        throw invalid_argument("Start or end node not found.");
+        throw std::invalid_argument("Start or end node not found.");
 
-    unordered_map<string,string> parent;
-    unordered_map<string,int> distance;
-    unordered_set<string> visited;
-    queue<string> q;
+    std::unordered_map<std::string,std::string> parent;
+    std::unordered_map<std::string,int> distance;
+    std::unordered_set<std::string> visited;
+    std::queue<std::string> q;
 
     visited.insert(start);
     distance[start] = 0;
@@ -99,13 +100,13 @@ Graph::shortestPath(const string& start,
 
     while (!q.empty()) {
 
-        string current = q.front();
+        std::string current = q.front();
         q.pop();
 
         if (current == end) break;
 
         for (const auto& edge : adjList[current]) {
-            const string& neighbor = edge.first;
+            const std::string& neighbor = edge.first;
 
             if (!visited.count(neighbor)) {
                 visited.insert(neighbor);
@@ -123,35 +124,38 @@ Graph::shortestPath(const string& start,
         return result;
     }
 
-    string crawl = end;
+    std::string crawl = end;
     while (crawl != start) {
         result.path.push_back(crawl);
         crawl = parent[crawl];
     }
 
     result.path.push_back(start);
-    reverse(result.path.begin(), result.path.end());
+    std::reverse(result.path.begin(), result.path.end());
     result.distance = distance[end];
 
     return result;
 }
+
 Graph::PathResult
-Graph::dijkstra(const string& start,
-                const string& end) {
+Graph::dijkstra(const std::string& start,
+                const std::string& end) {
 
     if (!adjList.count(start) || !adjList.count(end))
-        throw invalid_argument("Start or end node not found.");
+        throw std::invalid_argument("Start or end node not found.");
 
-    unordered_map<string,int> distance;
-    unordered_map<string,string> parent;
+    std::unordered_map<std::string,int> distance;
+    std::unordered_map<std::string,std::string> parent;
 
     for (const auto& pair : adjList)
-        distance[pair.first] = numeric_limits<int>::max();
+        distance[pair.first] = std::numeric_limits<int>::max();
 
     distance[start] = 0;
 
-    using P = pair<int,string>;
-    priority_queue<P, vector<P>, greater<P>> pq;
+    using P = std::pair<int,std::string>;
+    std::priority_queue<P,
+                        std::vector<P>,
+                        std::greater<P>> pq;
 
     pq.push({0, start});
 
@@ -160,9 +164,11 @@ Graph::dijkstra(const string& start,
         auto [dist, node] = pq.top();
         pq.pop();
 
+        if (dist > distance[node]) continue;  // important optimization
+
         if (node == end) break;
 
-        for (auto& [neighbor, weight] : adjList[node]) {
+        for (const auto& [neighbor, weight] : adjList[node]) {
 
             if (distance[node] + weight < distance[neighbor]) {
                 distance[neighbor] = distance[node] + weight;
@@ -174,19 +180,19 @@ Graph::dijkstra(const string& start,
 
     PathResult result;
 
-    if (distance[end] == numeric_limits<int>::max()) {
+    if (distance[end] == std::numeric_limits<int>::max()) {
         result.distance = -1;
         return result;
     }
 
-    string crawl = end;
+    std::string crawl = end;
     while (crawl != start) {
         result.path.push_back(crawl);
         crawl = parent[crawl];
     }
 
     result.path.push_back(start);
-    reverse(result.path.begin(), result.path.end());
+    std::reverse(result.path.begin(), result.path.end());
     result.distance = distance[end];
 
     return result;
