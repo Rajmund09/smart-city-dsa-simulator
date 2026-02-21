@@ -3,7 +3,7 @@
 A modular Smart City Management Simulator built in C++ implementing core Data Structures and Algorithms from beginner to advanced level.
 
 ---
-📌 Current Module (v0.2.0)
+## 📌 Current Module (v0.2.0)
 
 ✔ Weighted Directed Graph implementation
 ✔ Adjacency List using unordered_map<string, vector<pair<string,int>>>
@@ -13,12 +13,10 @@ A modular Smart City Management Simulator built in C++ implementing core Data St
 ✔ Dijkstra’s Algorithm (for weighted graphs)
 ✔ Exception handling
 
-⏱ Time Complexity
+## ⏱ Time Complexity
 
 BFS: O(V + E)
-
 DFS: O(V + E)
-
 Dijkstra: O((V + E) log V)
 
 
