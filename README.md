@@ -3,21 +3,23 @@
 A modular Smart City Management Simulator built in C++ implementing core Data Structures and Algorithms from beginner to advanced level.
 
 ---
-## 📌 Current Module (v0.2.0)
+📌 Current Module (v2.0.0)
 
-✔ Weighted Directed Graph implementation
-✔ Adjacency List using unordered_map<string, vector<pair<string,int>>>
-✔ BFS traversal
-✔ DFS traversal
-✔ Shortest Path (BFS for unweighted graphs)
-✔ Dijkstra’s Algorithm (for weighted graphs)
-✔ Exception handling
+✔ Weighted Directed Graph implementation  
+✔ Adjacency List using unordered_map<string, vector<pair<string,int>>>  
+✔ BFS traversal  
+✔ DFS traversal  
+✔ Shortest Path (BFS for unweighted graphs)  
+✔ Dijkstra’s Algorithm (for weighted graphs)  
+✔ Exception handling  
 
 ## ⏱ Time Complexity
 
-BFS: O(V + E)
-DFS: O(V + E)
-Dijkstra: O((V + E) log V)
+| Algorithm            | Time Complexity        |
+|----------------------|------------------------|
+| BFS                  | O(V + E)               |
+| DFS                  | O(V + E)               |
+| Dijkstra (Min Heap)  | O((V + E) log V)       |
 
 
 ## 📌 Current Module (v0.1.0)
@@ -31,16 +33,16 @@ Dijkstra: O((V + E) log V)
 
 ---
 
-## 📁 Project Structure
+📂 Project Structure
 
 smart-city-dsa-simulator/
 │
 ├── include/
-│ └── Graph.h
+│   └── Graph.h
 │
 ├── src/
-│ ├── Graph.cpp
-│ └── main.cpp
+│   ├── Graph.cpp
+│   └── main.cpp
 │
 └── .vscode/
 
