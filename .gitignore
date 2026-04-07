@@ -1,2 +1,55 @@
 *.exe
 .vscode/
+
+# Compiled Object files, templates, shared directories
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+
+# CMake build directories
+/backend/build/
+/backend/build_*
+CMakeCache.txt
+CMakeFiles/
+CMakeConfigureLog.yaml
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# IDEs
+.idea/
+*.suo
+*.user
+*.userossc
+*.sln
+*.vcxproj
+*.filters
+
+# Node.js / Frontend
+/frontend/node_modules/
+/frontend/dist/
+/frontend/dist-ssr/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment secrets and credentials
+.env
+.env.*
+!.env.example
+secrets.*
+*.pem
+*.key
+*.pub
+*.cert
+
+# Operating System files
+.DS_Store
+Thumbs.db
