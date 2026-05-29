@@ -61,7 +61,7 @@ export const ControlPanel: React.FC = () => {
   // Accordion active tab
   const [activeAccordion, setActiveAccordion] = useState<'algo' | 'node' | 'edge' | 'io'>('algo');
 
-  const logEndRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
   const playTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Load cities on mount
@@ -76,9 +76,11 @@ export const ControlPanel: React.FC = () => {
     }
   }, [workspace.activeCityId, dispatch]);
 
-  // Handle auto scrolling terminal logs
+  // Handle auto scrolling terminal logs without moving the main page
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
   }, [simulator.logs, simulator.currentStepIndex]);
 
   // Simulator playback logic loop
@@ -251,12 +253,12 @@ export const ControlPanel: React.FC = () => {
   };
 
   return (
-    <div className="fixed left-4 top-4 bottom-4 w-80 flex flex-col z-20 rounded-3xl border border-slate-200/30 dark:border-white/5 bg-white/60 dark:bg-dark-900/45 backdrop-blur-2xl shadow-2xl overflow-hidden glass-panel">
+    <div className="fixed left-4 top-4 bottom-4 w-80 flex flex-col z-20 clay-panel overflow-hidden">
       
       {/* City selector header */}
-      <div className="p-4 border-b border-slate-200/80 dark:border-dark-700/60 flex flex-col gap-2.5 bg-white/40 dark:bg-dark-900/40">
-        <label className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-2">
-          <Database className="w-3.5 h-3.5 text-brand-500" /> Workspace City
+      <div className="p-4 border-b border-slate-200/5 dark:border-dark-700/30 flex flex-col gap-2.5 clay-inset m-2 bg-transparent">
+        <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <Database className="w-4 h-4 text-brand-500" /> Workspace City
         </label>
         
         <div className="flex gap-2">
@@ -283,7 +285,7 @@ export const ControlPanel: React.FC = () => {
           />
           <button
             type="submit"
-            className="bg-brand-500 text-white rounded-xl px-3 hover:bg-brand-600 focus:outline-none cursor-pointer flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm shadow-brand-500/15"
+            className="clay-btn-primary px-3"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -307,7 +309,7 @@ export const ControlPanel: React.FC = () => {
               />
             </div>
             <div className="space-y-1.5">
-              <h4 className="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+              <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                 No Active Grid
               </h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-[230px] leading-relaxed mx-auto font-medium">
@@ -319,13 +321,13 @@ export const ControlPanel: React.FC = () => {
           <div className="space-y-3.5">
             
             {/* Accordion 1: Algorithm Runner */}
-            <div className="glass-panel overflow-hidden border border-slate-200/50 dark:border-dark-700/40 rounded-2xl">
+            <div className="clay-inset overflow-hidden mx-3 mb-1">
               <button
                 type="button"
                 onClick={() => toggleAccordion('algo')}
-                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-slate-50/50 dark:hover:bg-dark-800/10 transition-colors"
+                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-300 flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 flex items-center gap-2">
                   <Sliders className="w-4 h-4 text-brand-500" /> Algorithm Runner
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${activeAccordion === 'algo' ? 'rotate-180' : ''}`} />
@@ -347,7 +349,7 @@ export const ControlPanel: React.FC = () => {
                       <div className="flex flex-col gap-1 mt-1">
                         <label className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">Select Algorithm</label>
                         <select
-                          className="input-premium py-2"
+                          className="clay-input py-2"
                           value={simulator.algorithm}
                           onChange={(e) => dispatch(setAlgorithm(e.target.value))}
                         >
@@ -384,7 +386,7 @@ export const ControlPanel: React.FC = () => {
                         <div className="flex flex-col gap-1">
                           <label className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">Start Node</label>
                           <select
-                            className="input-premium py-2"
+                            className="clay-input py-2"
                             value={simulator.startNode}
                             onChange={(e) => dispatch(setStartNode(e.target.value))}
                           >
@@ -397,7 +399,7 @@ export const ControlPanel: React.FC = () => {
                         <div className="flex flex-col gap-1">
                           <label className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">Target Node</label>
                           <select
-                            className="input-premium py-2"
+                            className="clay-input py-2"
                             value={simulator.endNode}
                             onChange={(e) => dispatch(setEndNode(e.target.value))}
                             disabled={['kruskal', 'topological', 'scc', 'bipartite'].includes(simulator.algorithm)}
@@ -413,7 +415,7 @@ export const ControlPanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleRunAlgorithm}
-                        className="w-full bg-brand-500 text-white rounded-xl py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-brand-600 transition cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-98 shadow-md shadow-brand-500/15"
+                        className="w-full clay-btn-primary py-2.5"
                       >
                         <Play className="w-3.5 h-3.5 fill-white" /> Compute in C++
                       </button>
@@ -428,11 +430,11 @@ export const ControlPanel: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="glass-panel border-brand-400/20 dark:border-brand-500/10 p-3.5 rounded-2xl neon-glow-brand space-y-3 bg-brand-50/15 dark:bg-brand-950/5"
+                className="clay-inset p-3.5 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <label className="text-[9px] font-extrabold uppercase tracking-widest text-brand-500 dark:text-brand-400">Step {simulator.currentStepIndex + 1} / {simulator.steps.length}</label>
-                  <label className="text-[9px] font-extrabold uppercase tracking-widest text-brand-500 dark:text-brand-400">{simulator.speed}ms</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Step {simulator.currentStepIndex + 1} / {simulator.steps.length}</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">{simulator.speed}ms</label>
                 </div>
 
                 <input
@@ -449,7 +451,7 @@ export const ControlPanel: React.FC = () => {
                   <button
                     onClick={() => dispatch(prevStep())}
                     disabled={simulator.currentStepIndex === 0}
-                    className="flex-1 p-2 rounded-xl bg-white dark:bg-dark-800 border border-slate-200 dark:border-dark-700 text-slate-700 dark:text-slate-300 disabled:opacity-40 cursor-pointer flex items-center justify-center hover:bg-slate-50"
+                    className="flex-1 clay-btn p-2"
                   >
                     <SkipBack className="w-3.5 h-3.5" />
                   </button>
@@ -457,7 +459,7 @@ export const ControlPanel: React.FC = () => {
                   {simulator.isRunning && !simulator.isPaused ? (
                     <button
                       onClick={() => dispatch(pauseSimulation())}
-                      className="flex-[2] py-2 rounded-xl bg-amber-500 text-white text-xs font-bold uppercase tracking-wider hover:bg-amber-600 cursor-pointer flex items-center justify-center gap-1 hover:scale-103 shadow-md shadow-amber-500/15"
+                      className="flex-[2] clay-btn-primary py-2"
                     >
                       <Pause className="w-3.5 h-3.5 fill-white" /> Pause
                     </button>
@@ -470,7 +472,7 @@ export const ControlPanel: React.FC = () => {
                           dispatch(resumeSimulation());
                         }
                       }}
-                      className="flex-[2] py-2 rounded-xl bg-brand-500 text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-600 cursor-pointer flex items-center justify-center gap-1 hover:scale-103 shadow-md shadow-brand-500/15"
+                      className="flex-[2] clay-btn-primary py-2"
                     >
                       <Play className="w-3.5 h-3.5 fill-white" /> Play
                     </button>
@@ -478,7 +480,7 @@ export const ControlPanel: React.FC = () => {
 
                   <button
                     onClick={() => dispatch(resetSimulation())}
-                    className="flex-1 p-2 rounded-xl bg-white dark:bg-dark-800 border border-slate-200 dark:border-dark-700 text-slate-700 dark:text-slate-300 cursor-pointer flex items-center justify-center hover:bg-slate-50"
+                    className="flex-1 clay-btn p-2"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
@@ -486,7 +488,7 @@ export const ControlPanel: React.FC = () => {
                   <button
                     onClick={() => dispatch(nextStep())}
                     disabled={simulator.currentStepIndex === simulator.steps.length - 1}
-                    className="flex-1 p-2 rounded-xl bg-white dark:bg-dark-800 border border-slate-200 dark:border-dark-700 text-slate-700 dark:text-slate-300 disabled:opacity-40 cursor-pointer flex items-center justify-center hover:bg-slate-50"
+                    className="flex-1 clay-btn p-2"
                   >
                     <SkipForward className="w-3.5 h-3.5" />
                   </button>
@@ -518,13 +520,13 @@ export const ControlPanel: React.FC = () => {
             </AnimatePresence>
 
             {/* Accordion 2: Create Nodes */}
-            <div className="glass-panel overflow-hidden border border-slate-200/50 dark:border-dark-700/40 rounded-2xl">
+            <div className="clay-inset overflow-hidden mx-3 mb-1">
               <button
                 type="button"
                 onClick={() => toggleAccordion('node')}
-                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-slate-50/50 dark:hover:bg-dark-800/10 transition-colors"
+                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-300 flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 flex items-center gap-2">
                   <Layers className="w-4 h-4 text-brand-500" /> Create Stations / Nodes
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${activeAccordion === 'node' ? 'rotate-180' : ''}`} />
@@ -549,7 +551,7 @@ export const ControlPanel: React.FC = () => {
                           <input
                             type="text"
                             placeholder="e.g. N11"
-                            className="input-premium"
+                            className="clay-input"
                             value={nodeId}
                             onChange={(e) => setNodeId(e.target.value)}
                           />
@@ -559,7 +561,7 @@ export const ControlPanel: React.FC = () => {
                           <input
                             type="text"
                             placeholder="e.g. City Mall"
-                            className="input-premium"
+                            className="clay-input"
                             value={nodeName}
                             onChange={(e) => setNodeName(e.target.value)}
                           />
@@ -569,7 +571,7 @@ export const ControlPanel: React.FC = () => {
                       <div className="flex flex-col gap-1">
                         <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Type</label>
                         <select
-                          className="input-premium"
+                          className="clay-input"
                           value={nodeType}
                           onChange={(e) => setNodeType(e.target.value)}
                         >
@@ -586,7 +588,7 @@ export const ControlPanel: React.FC = () => {
                           <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Latitude</label>
                           <input
                             type="text"
-                            className="input-premium"
+                            className="clay-input"
                             value={nodeLat}
                             onChange={(e) => setNodeLat(e.target.value)}
                           />
@@ -595,7 +597,7 @@ export const ControlPanel: React.FC = () => {
                           <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Longitude</label>
                           <input
                             type="text"
-                            className="input-premium"
+                            className="clay-input"
                             value={nodeLng}
                             onChange={(e) => setNodeLng(e.target.value)}
                           />
@@ -604,7 +606,7 @@ export const ControlPanel: React.FC = () => {
 
                       <button
                         type="submit"
-                        className="w-full bg-slate-900 dark:bg-dark-700 hover:bg-slate-800 dark:hover:bg-dark-600 text-white rounded-xl py-2.5 transition font-extrabold uppercase tracking-widest text-[10px] cursor-pointer hover:scale-102 active:scale-98 shadow-md"
+                        className="w-full clay-btn-primary py-2.5"
                       >
                         Add Node
                       </button>
@@ -615,13 +617,13 @@ export const ControlPanel: React.FC = () => {
             </div>
 
             {/* Accordion 3: Create Edges */}
-            <div className="glass-panel overflow-hidden border border-slate-200/50 dark:border-dark-700/40 rounded-2xl">
+            <div className="clay-inset overflow-hidden mx-3 mb-1">
               <button
                 type="button"
                 onClick={() => toggleAccordion('edge')}
-                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-slate-50/50 dark:hover:bg-dark-800/10 transition-colors"
+                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-300 flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 flex items-center gap-2">
                   <Link className="w-4 h-4 text-brand-500" /> Create Infrastructure Links
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${activeAccordion === 'edge' ? 'rotate-180' : ''}`} />
@@ -644,7 +646,7 @@ export const ControlPanel: React.FC = () => {
                         <div className="flex flex-col gap-1">
                           <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Source ID</label>
                           <select
-                            className="input-premium"
+                            className="clay-input"
                             value={edgeSource}
                             onChange={(e) => setEdgeSource(e.target.value)}
                           >
@@ -657,7 +659,7 @@ export const ControlPanel: React.FC = () => {
                         <div className="flex flex-col gap-1">
                           <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Dest ID</label>
                           <select
-                            className="input-premium"
+                            className="clay-input"
                             value={edgeDest}
                             onChange={(e) => setEdgeDest(e.target.value)}
                           >
@@ -675,7 +677,7 @@ export const ControlPanel: React.FC = () => {
                           <input
                             type="text"
                             placeholder="e.g. 150.0"
-                            className="input-premium"
+                            className="clay-input"
                             value={edgeWeight}
                             onChange={(e) => setEdgeWeight(e.target.value)}
                           />
@@ -683,7 +685,7 @@ export const ControlPanel: React.FC = () => {
                         <div className="flex flex-col gap-1">
                           <label className="text-[9px] uppercase font-extrabold text-slate-400 dark:text-slate-500">Link Type</label>
                           <select
-                            className="input-premium"
+                            className="clay-input"
                             value={edgeType}
                             onChange={(e) => setEdgeType(e.target.value)}
                           >
@@ -708,13 +710,13 @@ export const ControlPanel: React.FC = () => {
             </div>
 
             {/* Accordion 4: Import / Export */}
-            <div className="glass-panel overflow-hidden border border-slate-200/50 dark:border-dark-700/40 rounded-2xl">
+            <div className="clay-inset overflow-hidden mx-3 mb-3">
               <button
                 type="button"
                 onClick={() => toggleAccordion('io')}
-                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-slate-50/50 dark:hover:bg-dark-800/10 transition-colors"
+                className="w-full p-3.5 flex items-center justify-between text-left cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-300 flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 flex items-center gap-2">
                   <Share2 className="w-4 h-4 text-brand-500" /> Import / Export Grid
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${activeAccordion === 'io' ? 'rotate-180' : ''}`} />
@@ -770,17 +772,15 @@ export const ControlPanel: React.FC = () => {
 
       {/* Real-time Traversal Terminal / Logs */}
       {workspace.activeCityId && (
-        <div className="h-44 border-t border-slate-200/80 dark:border-dark-700/60 bg-dark-950 text-emerald-400 font-mono text-[10px] p-3.5 flex flex-col overflow-hidden relative">
-          {/* Subtle hacker green scan line/shadow */}
-          <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+        <div className="h-44 clay-inset m-2 text-brand-300 font-mono text-[10px] p-3.5 flex flex-col overflow-hidden relative">
           
-          <div className="flex items-center gap-1.5 border-b border-slate-800/80 pb-1.5 mb-2 text-slate-400 relative z-10">
-            <TermIcon className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="font-extrabold text-[9px] uppercase tracking-widest">Visual Traversal Console</span>
-            <div className="ml-auto w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="flex items-center gap-1.5 border-b border-black/10 dark:border-white/10 pb-1.5 mb-2 relative z-10">
+            <TermIcon className="w-3.5 h-3.5 text-brand-500" />
+            <span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400">Visual Traversal Console</span>
+            <div className="ml-auto w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
           </div>
           
-          <div className="flex-1 overflow-y-auto space-y-1 relative z-10 scrollbar-thin scrollbar-thumb-emerald-500/20">
+          <div ref={terminalRef} className="flex-1 overflow-y-auto space-y-1 relative z-10 scrollbar-thin scrollbar-thumb-brand-500/20">
             <AnimatePresence>
               {simulator.logs.map((log, index) => (
                 <motion.div
@@ -790,12 +790,11 @@ export const ControlPanel: React.FC = () => {
                   transition={{ duration: 0.15 }}
                   className="leading-relaxed flex items-start gap-1"
                 >
-                  <span className="text-emerald-500/60 shrink-0 select-none">$</span>
-                  <span>{log}</span>
+                  <span className="text-brand-500/60 shrink-0 select-none">$</span>
+                  <span className="text-slate-600 dark:text-slate-300">{log}</span>
                 </motion.div>
               ))}
             </AnimatePresence>
-            <div ref={logEndRef} />
           </div>
         </div>
       )}
