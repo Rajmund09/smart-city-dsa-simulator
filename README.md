@@ -10,7 +10,9 @@ Designed to simulate city infrastructure (roads, grids, water, rails) at massive
 
 - **Interactive Simulation Canvas:** Drag-and-drop nodes, create physical link weights proportional to GPS distances, edit nodes (Intersections, Reservoirs, Power Stations), and draw networks visually.
 - **15+ C++20 Graph Algorithms:** Built-in traversal, shortest paths, MSTs, and flow optimization, along with advanced heuristics (Ant Colony, Genetic, Simulated Annealing).
-- **Neon-Glow Traversal Animations:** Step-by-step debugger playback to watch visual traversal queues, active relaxations, and final paths.
+- **Apple-Level Visual Data Streams:** Organic Bezier-curved edges with high-performance glowing SVG data packets pulsing sequentially along computed routes. 
+- **Synchronized Audio Tracing:** Integrated Web Audio API synchronization that plays futuristic UI sweep tones during algorithm steps and a success arpeggio when paths are resolved.
+- **Neumorphic & Claymorphic Aesthetic:** An ultra-premium "Claymorphic" user interface using Tailwind CSS and Framer Motion for deep shadows, tactile controls, and immersive dark/light themes.
 - **Enterprise Analytics Dashboard:** Performance metrics comparing execution times, peak RSS memory consumption, and infrastructure counts plotted responsively using Recharts.
 - **SaaS-Grade DevOps Integration:** Single-command setup using Docker Compose (Nginx, C++ Pistache Server, Postgres Alpine).
 - **Undo/Redo & Import/Export:** Time-travel workspace edits with full CSV and JSON schema imports/exports.
@@ -21,8 +23,9 @@ Designed to simulate city infrastructure (roads, grids, water, rails) at massive
 
 | Layer | Technology | Key Capabilities |
 | :--- | :--- | :--- |
-| **Frontend** | React 18, TypeScript, Vite, Tailwind | Vercel/Linear glassmorphism UI |
-| **Canvas** | React Flow, Framer Motion | Zoom/pan, drag handles, neon-glow traces |
+| **Frontend** | React 18, TypeScript, Vite, Tailwind | Neumorphic/Claymorphic UI, Custom Themes |
+| **Canvas** | React Flow, Framer Motion | Smooth Bezier curves, animated SVG glow streams |
+| **Audio API** | Web Audio Context | Procedural algorithm tracing sounds |
 | **State** | Redux Toolkit, React Query | Sync caching, undo/redo states |
 | **Backend API** | C++20, Pistache, spdlog, CMake | Multithreaded REST handling, fast routing |
 | **Graph Core** | C++20 Template engine | Thread-safe `Graph<V,E>` with `std::shared_mutex` |
