@@ -1,180 +1,230 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Tailwind v4 dark mode variant config */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-50: #f0f9ff;
-  --color-brand-100: #e0f2fe;
-  --color-brand-200: #bae6fd;
-  --color-brand-300: #7dd3fc;
-  --color-brand-400: #38bdf8;
-  --color-brand-500: #0ea5e9;
-  --color-brand-600: #0284c7;
-  --color-brand-700: #0369a1;
+  --color-brand-50: #fef0ea;
+  --color-brand-100: #fde0d4;
+  --color-brand-200: #fbc2ae;
+  --color-brand-300: #f79c80;
+  --color-brand-400: #f37756;
+  --color-brand-500: #e55a36; /* Rose Gold / Molten Copper Accent */
+  --color-brand-600: #d04323;
+  --color-brand-700: #b4351a;
 
-  --color-dark-950: #020307;
-  --color-dark-900: #070913;
-  --color-dark-800: #0d1020;
-  --color-dark-700: #161a33;
-  --color-dark-600: #22274d;
+  --color-dark-950: #1a1e24;  
+  --color-dark-900: #23272f;  /* Base Neumorphic Dark Bg */
+  --color-dark-800: #2c323a;  /* Elevated Neumorphic */
+  --color-dark-700: #3a414b;  
+  --color-dark-600: #49515c;
 
-  --font-sans: 'Plus Jakarta Sans', 'Outfit', 'Inter', sans-serif;
-  --font-mono: 'Fira Code', 'Courier New', monospace;
+  --color-clay-950: #e0e5ec;  /* Base Neumorphic Light Bg */
+  --color-clay-900: #eaeff5;
+  --color-clay-800: #f2f6fa;
+  --color-clay-700: #ffffff;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @layer base {
   body {
-    background: #020307;
-    @apply text-slate-200 font-sans antialiased overflow-hidden selection:bg-brand-500/30 transition-colors duration-300;
+    background: #23272f;
+    @apply text-slate-200 font-sans antialiased overflow-hidden selection:bg-brand-500/30 transition-colors duration-500;
   }
 
-  /* Support light mode if explicitly toggled */
-  body.light {
-    background: #f8fafc;
-    @apply text-slate-800 selection:bg-brand-200;
+  body.light, html.light body {
+    background: #e0e5ec;
+    @apply text-slate-600 selection:bg-brand-200;
   }
 }
 
-/* Custom Scrollbars */
+/* Base custom scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   @apply rounded-full hover:bg-white/20;
 }
-.light ::-webkit-scrollbar-thumb {
+.light ::-webkit-scrollbar-thumb, html.light ::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.1);
   @apply hover:bg-black/20;
 }
 
-/* Premium Floating Glassmorphism Panels */
-.glass-panel {
-  background: rgba(7, 9, 19, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.01);
-  @apply transition-all duration-300;
+/* -------------------------------------------------------------
+ * Neumorphic / Claymorphic UI Shadows 
+ * ------------------------------------------------------------- */
+/* Raised / Flat Layer */
+.clay-panel {
+  background: #23272f;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.04),
+              6px 6px 14px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  @apply rounded-2xl transition-all duration-300;
+}
+.light .clay-panel, html.light .clay-panel {
+  background: #e0e5ec;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.8),
+              6px 6px 14px rgba(163, 177, 198, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.light .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 15px 35px -10px rgba(100, 116, 139, 0.15), 0 1px 3px rgba(0, 0, 0, 0.02);
+/* Inset / Pressed Layer */
+.clay-inset {
+  background: #23272f;
+  box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.04),
+              inset 4px 4px 8px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  @apply rounded-xl transition-all duration-300;
+}
+.light .clay-inset, html.light .clay-inset {
+  background: #e0e5ec;
+  box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.7),
+              inset 4px 4px 8px rgba(163, 177, 198, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
-.glass-panel-hover {
-  @apply hover:bg-dark-900/65 hover:border-white/10 hover:shadow-2xl hover:shadow-brand-500/5;
+/* Interactive Buttons */
+.clay-btn {
+  background: #23272f;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.04),
+              4px 4px 10px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  @apply font-bold rounded-xl transition-all duration-200 cursor-pointer text-slate-300 flex items-center justify-center;
 }
-.light .glass-panel-hover {
-  @apply hover:bg-white/75 hover:border-black/10 hover:shadow-xl hover:shadow-slate-300/10;
+.clay-btn:active, .clay-btn.active {
+  box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.04),
+              inset 4px 4px 8px rgba(0, 0, 0, 0.35);
+  color: #f79c80; /* Rose gold text when pressed */
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
-
-/* macOS Center Dock */
-.glass-dock {
-  background: rgba(10, 12, 24, 0.75);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px 2px rgba(14, 165, 233, 0.06);
+.clay-btn:hover {
+  color: #f79c80;
 }
-
-.light .glass-dock {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(32px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 20px 40px -10px rgba(100, 116, 139, 0.2), 0 0 15px 1px rgba(0, 0, 0, 0.02);
+.light .clay-btn, html.light .clay-btn {
+  background: #e0e5ec;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8),
+              4px 4px 10px rgba(163, 177, 198, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  @apply text-slate-600;
 }
-
-/* Sci-fi inputs */
-.input-premium {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  @apply w-full rounded-xl px-3 py-2 text-xs transition-all duration-200 focus:outline-none focus:border-brand-500 focus:bg-dark-950/40 focus:ring-4 focus:ring-brand-500/10 font-medium placeholder:text-slate-500 text-slate-100;
+.light .clay-btn:active, .light .clay-btn.active, html.light .clay-btn:active, html.light .clay-btn.active {
+  box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.7),
+              inset 4px 4px 8px rgba(163, 177, 198, 0.4);
+  color: #e55a36;
 }
-
-.light .input-premium {
-  background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  @apply focus:bg-white focus:ring-brand-500/10 text-slate-800 placeholder:text-slate-400;
+.light .clay-btn:hover, html.light .clay-btn:hover {
+  color: #e55a36;
 }
 
-/* Glowing text & icons */
-.text-glow-brand {
-  text-shadow: 0 0 10px rgba(14, 165, 233, 0.35);
+/* Primary Accent Button (Rose Gold glow) */
+.clay-btn-primary {
+  background: #23272f;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.04),
+              4px 4px 10px rgba(0, 0, 0, 0.35),
+              inset 0 0 0 1px rgba(247, 156, 128, 0.4); /* Copper rim */
+  border: 1px solid rgba(247, 156, 128, 0.2);
+  @apply font-bold rounded-xl transition-all duration-200 cursor-pointer text-brand-300 flex items-center justify-center;
+}
+.clay-btn-primary:active, .clay-btn-primary.active {
+  box-shadow: inset -4px -4px 10px rgba(255, 255, 255, 0.02),
+              inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+              0 0 15px rgba(247, 156, 128, 0.4); /* Outer glow when pressed */
+  color: #fbc2ae;
+  border-color: transparent;
+}
+.light .clay-btn-primary, html.light .clay-btn-primary {
+  background: #e0e5ec;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8),
+              4px 4px 10px rgba(163, 177, 198, 0.5),
+              inset 0 0 0 1px rgba(229, 90, 54, 0.3);
+  border: 1px solid rgba(229, 90, 54, 0.2);
+  @apply text-brand-600;
+}
+.light .clay-btn-primary:active, html.light .clay-btn-primary:active {
+  box-shadow: inset -4px -4px 10px rgba(255, 255, 255, 0.6),
+              inset 4px 4px 10px rgba(163, 177, 198, 0.4),
+              0 0 15px rgba(229, 90, 54, 0.3);
 }
 
-.neon-glow-brand {
-  box-shadow: 0 0 25px rgba(14, 165, 233, 0.2), 0 0 50px rgba(14, 165, 233, 0.08);
+/* Neumorphic Input Fields */
+.clay-input {
+  background: #23272f;
+  box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.03),
+              inset 3px 3px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent;
+  @apply w-full rounded-xl px-4 py-2 text-xs transition-all duration-200 focus:outline-none focus:border-brand-500 focus:shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.03),inset_3px_3px_6px_rgba(0,0,0,0.3),0_0_8px_rgba(247,156,128,0.2)] font-medium placeholder:text-slate-500 text-slate-200;
+}
+.light .clay-input, html.light .clay-input {
+  background: #e0e5ec;
+  box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.7),
+              inset 3px 3px 6px rgba(163, 177, 198, 0.4);
+  @apply focus:border-brand-500 focus:shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.7),inset_3px_3px_6px_rgba(163,177,198,0.4),0_0_8px_rgba(229,90,54,0.2)] text-slate-700 placeholder:text-slate-400;
 }
 
-.neon-glow-success {
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+/* React Flow Edges styling overrides for Claymorphism */
+.react-flow__edge-path.clay-edge {
+  stroke: #49515c;
+  stroke-width: 3;
+}
+.light .react-flow__edge-path.clay-edge {
+  stroke: #a3b1c6;
 }
 
-.text-gradient-cyan {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400;
+.react-flow__edge-path.clay-edge-active {
+  stroke: #f79c80 !important; /* Rose Gold */
+  stroke-width: 4;
+  filter: drop-shadow(0 0 6px rgba(247, 156, 128, 0.6));
+}
+.light .react-flow__edge-path.clay-edge-active {
+  stroke: #e55a36 !important; 
+  filter: drop-shadow(0 0 6px rgba(229, 90, 54, 0.4));
 }
 
-/* Pulse / ripple animations */
-@keyframes neon-pulse {
-  0%, 100% {
-    stroke-dashoffset: 0;
-    stroke: #06b6d4;
-    filter: drop-shadow(0 0 2px rgba(6, 182, 212, 0.5));
-  }
-  50% {
-    stroke: #d946ef;
-    filter: drop-shadow(0 0 12px rgba(217, 70, 239, 0.9)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.4));
-  }
+/* Base custom scanline */
+@keyframes scanning-laser {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+}
+.animate-scan {
+  animation: scanning-laser 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.animate-neon-flow {
-  stroke-dasharray: 8 4;
-  animation: neon-flow 12s linear infinite, neon-pulse 3.5s ease-in-out infinite;
-}
-
-@keyframes neon-flow {
-  from {
-    stroke-dashoffset: 360;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
+/* Node ripple/pulse using rose gold */
 .node-ripple {
-  animation: ripple 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  animation: ripple 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
 }
-
 @keyframes ripple {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
 }
 
 .node-pulse-slow {
-  animation: pulse-slow 2s ease-in-out infinite;
+  animation: pulse-slow 2.5s ease-in-out infinite;
+}
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(247, 156, 128, 0.3); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px 5px rgba(247, 156, 128, 0.1); }
 }
 
-@keyframes pulse-slow {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5);
-  }
-  50% {
-    transform: scale(1.06);
-    box-shadow: 0 0 15px 8px rgba(6, 182, 212, 0);
+/* Edge path styling for final computed route */
+.react-flow__edge-path.clay-edge-path {
+  stroke: #10b981 !important; /* Emerald-500 */
+  stroke-width: 4;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -20;
   }
 }

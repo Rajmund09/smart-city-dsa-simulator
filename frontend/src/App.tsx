@@ -5,6 +5,7 @@ import { store } from './store/store';
 import { ControlPanel } from './components/ControlPanel';
 import { GraphWorkspace } from './components/GraphWorkspace';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
+import { AlgorithmFlowPanel } from './components/AlgorithmFlowPanel';
 import { Map, BarChart2, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -20,9 +21,9 @@ const AppContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'workspace' | 'analytics'>('workspace');
   const [darkMode, setDarkMode] = useState(true); // Dark mode by default
 
-  // Sync dark class on body element
+  // Sync dark class on html element for Tailwind
   useEffect(() => {
-    const root = window.document.body;
+    const root = window.document.documentElement;
     if (darkMode) {
       root.classList.add('dark');
       root.classList.remove('light');
@@ -42,6 +43,11 @@ const AppContent: React.FC = () => {
       
       {/* Floating Left Control Panel */}
       <ControlPanel />
+
+      {/* Floating Right Algorithm Trace Panel */}
+      <AnimatePresence>
+        {activeTab === 'workspace' && <AlgorithmFlowPanel />}
+      </AnimatePresence>
 
       {/* Floating Bottom macOS Glass Dock */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 px-3.5 py-2.5 rounded-2xl flex items-center gap-3.5 glass-dock">
