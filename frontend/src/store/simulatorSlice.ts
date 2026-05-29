@@ -20,6 +20,7 @@ export interface RunAlgorithmPayload {
 interface SimulatorState {
   isRunning: boolean;
   isPaused: boolean;
+  isComputing: boolean;
   algorithm: string;
   startNode: string;
   endNode: string;
@@ -39,6 +40,7 @@ interface SimulatorState {
 const initialState: SimulatorState = {
   isRunning: false,
   isPaused: false,
+  isComputing: false,
   algorithm: 'dijkstra',
   startNode: '',
   endNode: '',
@@ -66,11 +68,16 @@ export const runAlgorithmDb = createAsyncThunk(
     if (start) body.start = start;
     if (end) body.end = end;
 
-    const res = await fetch(endpoint, {
+    // Minimum delay to let the high-tech scanning HUD animate on the UI map canvas
+    const delayPromise = new Promise((resolve) => setTimeout(resolve, 900));
+
+    const fetchPromise = fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
+
+    const [, res] = await Promise.all([delayPromise, fetchPromise]);
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
@@ -169,11 +176,13 @@ const simulatorSlice = createSlice({
       .addCase(runAlgorithmDb.pending, (state) => {
         state.isRunning = false;
         state.isPaused = false;
+        state.isComputing = true;
         state.error = null;
         state.logs = ['[System] Connecting to C++ Core Graph Engine...'];
       })
       .addCase(runAlgorithmDb.fulfilled, (state, action) => {
         state.isRunning = true;
+        state.isComputing = false;
         state.steps = action.payload.steps;
         state.path = action.payload.path;
         state.cost = action.payload.cost;
@@ -191,6 +200,7 @@ const simulatorSlice = createSlice({
       })
       .addCase(runAlgorithmDb.rejected, (state, action) => {
         state.isRunning = false;
+        state.isComputing = false;
         state.error = action.error.message || 'Algorithm execution failed';
         state.logs = [`[Error] C++ Engine failed: ${state.error}`];
       });
