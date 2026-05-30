@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 # Clone and build Pistache REST Framework (master branch)
 RUN git clone https://github.com/pistacheio/pistache.git /tmp/pistache && \
     cd /tmp/pistache && \
-    meson setup build --buildtype=release -Dcpp_std=c++20 -Dtests=false && \
+    meson setup build --buildtype=release -Dcpp_std=c++20 && \
     meson compile -C build && \
     meson install -C build && \
     cd / && rm -rf /tmp/pistache
