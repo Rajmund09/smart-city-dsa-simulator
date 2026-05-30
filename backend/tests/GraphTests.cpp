@@ -114,3 +114,51 @@ TEST(GraphAlgorithmsTest, TopologicalSortCycle) {
     auto result = Algorithms::topologicalSort(g);
     EXPECT_EQ(result.cost, -1); // error code for cycle
 }
+
+// Test DFS Traversal
+TEST(GraphAlgorithmsTest, DFSTraversal) {
+    Graph<CityNode, CityEdge> g;
+    g.addNode("A", {"A", "A", 0, 0, "int"});
+    g.addNode("B", {"B", "B", 0, 0, "int"});
+    g.addNode("C", {"C", "C", 0, 0, "int"});
+    
+    g.addEdge({"1", "A", "B", 1.0, "road"});
+    g.addEdge({"2", "B", "C", 1.0, "road"});
+    
+    auto result = Algorithms::dfs(g, "A");
+    EXPECT_EQ(result.path.size(), 3);
+    // Path could be A-B-C or A-C-B depending on map iteration, but with our insertions it's likely A-B-C or A-C since A has only edge to B.
+}
+
+// Test A* Pathfinding
+TEST(GraphAlgorithmsTest, AStarPathfinding) {
+    Graph<CityNode, CityEdge> g;
+    // adding lat/lon for heuristic
+    g.addNode("A", {"A", "A", 40.0, -74.0, "int"});
+    g.addNode("B", {"B", "B", 40.1, -74.0, "int"});
+    g.addNode("C", {"C", "C", 40.2, -74.0, "int"});
+    
+    g.addEdge({"1", "A", "B", 10.0, "road"});
+    g.addEdge({"2", "B", "C", 10.0, "road"});
+    g.addEdge({"3", "A", "C", 30.0, "road"}); // slower direct
+    
+    auto result = Algorithms::aStar(g, "A", "C");
+    EXPECT_DOUBLE_EQ(result.cost, 20.0);
+    EXPECT_EQ(result.path.size(), 3);
+}
+
+// Test Bellman-Ford
+TEST(GraphAlgorithmsTest, BellmanFordShortestPath) {
+    Graph<CityNode, CityEdge> g;
+    g.addNode("A", {"A", "A", 0, 0, "int"});
+    g.addNode("B", {"B", "B", 0, 0, "int"});
+    g.addNode("C", {"C", "C", 0, 0, "int"});
+    
+    g.addEdge({"1", "A", "B", 1.0, "road"});
+    g.addEdge({"2", "B", "C", -5.0, "road"}); // negative weight!
+    g.addEdge({"3", "A", "C", 2.0, "road"});
+    
+    auto result = Algorithms::bellmanFord(g, "A", "C");
+    // Path A->B->C cost is -4. Path A->C cost is 2.
+    EXPECT_DOUBLE_EQ(result.cost, -4.0);
+}
