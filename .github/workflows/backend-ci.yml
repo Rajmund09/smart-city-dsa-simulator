@@ -1,0 +1,22 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build Backend Image
+      run: |
+        cd backend
+        docker build -t smart-city-backend:test --target runner .
+
+    - name: Run Backend Tests
+      run: |
+        docker run --rm smart-city-backend:test /usr/local/bin/graph_tests
