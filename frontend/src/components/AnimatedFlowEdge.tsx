@@ -30,16 +30,17 @@ export default function AnimatedFlowEdge({
   return (
     <>
       {/* Base Edge Line */}
-      <BaseEdge 
-        id={id} 
-        path={edgePath} 
-        style={{
-          ...style,
-          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-        }} 
-        markerEnd={markerEnd} 
-        className={isActive ? 'clay-edge-active' : (isPath ? 'clay-edge-path' : 'clay-edge')}
-      />
+      <g className={isActive ? 'clay-edge-active' : (isPath ? 'clay-edge-path' : 'clay-edge')}>
+        <BaseEdge 
+          id={id} 
+          path={edgePath} 
+          style={{
+            ...style,
+            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          }} 
+          markerEnd={markerEnd} 
+        />
+      </g>
 
       {/* Stream of glowing data packets for the final path (Apple/Stripe style) */}
       {isPath && (

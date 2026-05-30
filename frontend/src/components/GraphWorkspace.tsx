@@ -111,7 +111,7 @@ const CustomNodeComponent = ({ data, selected }: { data: any; selected: boolean 
 
 export const GraphWorkspace: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { nodes: wsNodes, edges: wsEdges, activeCityId, selectedNodeId, activeCityName } = useAppSelector((state) => state.workspace);
+  const { nodes: wsNodes, edges: wsEdges, activeCityId, selectedNodeId } = useAppSelector((state) => state.workspace);
   const {
     isRunning,
     steps,
