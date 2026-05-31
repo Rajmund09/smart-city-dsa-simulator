@@ -48,7 +48,7 @@ const xyToLatLng = (x: number, y: number) => {
 };
 
 // Custom Node Renderer
-const CustomNodeComponent = ({ data, selected }: { data: any; selected: boolean }) => {
+const CustomNodeComponent = ({ data, selected }: { data: { label: string, type: string, isPath: boolean, isActive: boolean, isVisited: boolean, isQueue: boolean }; selected: boolean }) => {
   const icon = useMemo(() => {
     switch (data.type) {
       case 'power_station':
@@ -207,7 +207,7 @@ export const GraphWorkspace: React.FC = () => {
                        (activeEdgeSrc === e.destination && activeEdgeDest === e.source);
       
       // Determine traversal direction for the animation. If it's part of the final path, use the path's direction.
-      let isReversed = false;
+      let isReversed: boolean;
       if (isPath) {
         const sourceIdx = finalPath.indexOf(e.source);
         const destIdx = finalPath.indexOf(e.destination);
@@ -260,7 +260,7 @@ export const GraphWorkspace: React.FC = () => {
 
     setRfNodes(mappedNodes);
     setRfEdges(mappedEdges);
-  }, [wsNodes, wsEdges, isRunning, steps, currentStepIndex, finalPath, setRfNodes, setRfEdges]);
+  }, [wsNodes, wsEdges, isRunning, steps, currentStepIndex, finalPath, setRfNodes, setRfEdges, activeStep]);
 
   // Handle node drag stop: Update GPS coordinate in DB
   const onNodeDragStop = useCallback(
@@ -283,6 +283,13 @@ export const GraphWorkspace: React.FC = () => {
     },
     [activeCityId, wsNodes, dispatch]
   );
+
+  // Custom function for A* heuristic
+  const distanceHeuristic = (n1: { latitude: number; longitude: number }, n2: { latitude: number; longitude: number }) => {
+    const dx = n1.latitude - n2.latitude;
+    const dy = n1.longitude - n2.longitude;
+    return Math.sqrt(dx * dx + dy * dy) * 111000;
+  };
 
   // Handle drawing connections to create new edges
   const onConnect = useCallback(
@@ -313,12 +320,7 @@ export const GraphWorkspace: React.FC = () => {
     [activeCityId, wsNodes, dispatch]
   );
 
-  // Custom function for A* heuristic
-  const distanceHeuristic = (n1: any, n2: any) => {
-    const dx = n1.latitude - n2.latitude;
-    const dy = n1.longitude - n2.longitude;
-    return Math.sqrt(dx * dx + dy * dy) * 111000;
-  };
+
 
   const onNodeClick = useCallback(
     (_event: React.MouseEvent, node: Node) => {

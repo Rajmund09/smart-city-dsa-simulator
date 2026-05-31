@@ -34,18 +34,17 @@ export const AlgorithmFlowPanel: React.FC = () => {
     spaceComplexity,
   } = simulator;
 
-  // Resolve node name helper
-  const getNodeName = (id: string) => {
-    const node = workspace.nodes.find((n) => n.id === id);
-    return node ? node.name : id;
-  };
-
   // Get active step details
   const activeStep = steps[currentStepIndex];
 
   // Detailed smart city narrative for current step
   const stepNarrative = useMemo(() => {
     if (!activeStep) return 'Simulation is not running.';
+
+    const getNodeName = (id: string) => {
+      const node = workspace.nodes.find((n) => n.id === id);
+      return node ? node.name : id;
+    };
 
     const { type, nodeId, sourceId, targetId, value } = activeStep;
     const name = getNodeName(nodeId);

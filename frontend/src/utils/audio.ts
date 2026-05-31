@@ -1,6 +1,6 @@
 export const playTechBlip = () => {
   try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContext = window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
     if (!AudioContext) return;
     
     const audioCtx = new AudioContext();
@@ -29,7 +29,7 @@ export const playTechBlip = () => {
 
 export const playSuccessChime = () => {
   try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContext = window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
     if (!AudioContext) return;
     
     const audioCtx = new AudioContext();

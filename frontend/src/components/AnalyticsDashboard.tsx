@@ -236,10 +236,10 @@ export const AnalyticsDashboard: React.FC = () => {
                   <YAxis tick={{ fontSize: 9, fontWeight: 600 }} stroke="#64748b" label={{ value: 'ms', angle: -90, position: 'insideLeft', style: { fontSize: 9, fontWeight: 700 } }} />
                   <Tooltip
                     contentStyle={{ fontSize: 10, borderRadius: 12, border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                    formatter={(value: any) => [`${parseFloat(value).toFixed(4)} ms`, 'Avg Time']}
+                    formatter={(value: number | string) => [`${parseFloat(value as string).toFixed(4)} ms`, 'Avg Time']}
                   />
                   <Bar dataKey="avgExecutionTimeMs" fill="#06b6d4" radius={[6, 6, 0, 0]}>
-                    {performance.map((_: any, index: number) => (
+                    {performance.map((_: unknown, index: number) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Bar>

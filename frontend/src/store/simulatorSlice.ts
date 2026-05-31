@@ -63,8 +63,8 @@ export const runAlgorithmDb = createAsyncThunk(
   'simulator/runAlgorithm',
   async (payload: RunAlgorithmPayload) => {
     const { algorithm, cityId, start, end } = payload;
-    let endpoint = `${API_BASE}/algorithms/${algorithm}`;
-    const body: Record<string, any> = { cityId };
+    const endpoint = `${API_BASE}/algorithms/${algorithm}`;
+    const body: Record<string, unknown> = { cityId };
     if (start) body.start = start;
     if (end) body.end = end;
 

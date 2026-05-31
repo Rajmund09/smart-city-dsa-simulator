@@ -240,7 +240,7 @@ export const ControlPanel: React.FC = () => {
           dispatch(fetchCityData(workspace.activeCityId!));
           alert('City graph imported successfully.');
         }
-      } catch (err) {
+      } catch {
         alert('Failed to parse graph JSON.');
       }
     };

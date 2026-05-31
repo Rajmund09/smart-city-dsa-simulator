@@ -149,7 +149,7 @@ TEST(GraphAlgorithmsTest, AStarPathfinding) {
 
 // Test Bellman-Ford
 TEST(GraphAlgorithmsTest, BellmanFordShortestPath) {
-    Graph<CityNode, CityEdge> g;
+    Graph<CityNode, CityEdge> g(true);
     g.addNode("A", {"A", "A", 0, 0, "int"});
     g.addNode("B", {"B", "B", 0, 0, "int"});
     g.addNode("C", {"C", "C", 0, 0, "int"});
