@@ -1,5 +1,8 @@
 # Smart City DSA Simulator Platform
 
+[![Backend CI](https://github.com/Rajmund09/smart-city-dsa-simulator/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Rajmund09/smart-city-dsa-simulator/actions/workflows/backend-ci.yml)
+[![Frontend CI](https://github.com/Rajmund09/smart-city-dsa-simulator/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Rajmund09/smart-city-dsa-simulator/actions/workflows/frontend-ci.yml)
+
 A world-class, production-ready, full-stack platform that transforms city graph network simulations. Built with a highly optimized C++20 core engine, Pistache REST API, PostgreSQL database, and a rich, visual React workspace utilizing React Flow.
 
 Designed to simulate city infrastructure (roads, grids, water, rails) at massive scale (10,000+ nodes) with visual real-time algorithm tracing, performance benchmarking, and complex optimization modeling.
@@ -14,6 +17,7 @@ Designed to simulate city infrastructure (roads, grids, water, rails) at massive
 - **Synchronized Audio Tracing:** Integrated Web Audio API synchronization that plays futuristic UI sweep tones during algorithm steps and a success arpeggio when paths are resolved.
 - **Neumorphic & Claymorphic Aesthetic:** An ultra-premium "Claymorphic" user interface using Tailwind CSS and Framer Motion for deep shadows, tactile controls, and immersive dark/light themes.
 - **Enterprise Analytics Dashboard:** Performance metrics comparing execution times, peak RSS memory consumption, and infrastructure counts plotted responsively using Recharts.
+- **Robust Testing & CI/CD Pipeline:** Fully automated GitHub Actions workflows executing comprehensive C++ GoogleTest backend suites (BFS, DFS, A*, Bellman-Ford) and React component Vitests.
 - **SaaS-Grade DevOps Integration:** Single-command setup using Docker Compose (Nginx, C++ Pistache Server, Postgres Alpine).
 - **Undo/Redo & Import/Export:** Time-travel workspace edits with full CSV and JSON schema imports/exports.
 
