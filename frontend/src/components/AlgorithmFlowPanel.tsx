@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/store';
 import { nextStep, prevStep, pauseSimulation, resumeSimulation, resetSimulation } from '../store/simulatorSlice';
+import { setActiveTab } from '../store/workspaceSlice';
 import {
   Play,
   Pause,
@@ -14,6 +15,7 @@ import {
   MapPin,
   Clock,
   Compass,
+  BarChart2,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -292,9 +294,19 @@ export const AlgorithmFlowPanel: React.FC = () => {
             Execution Flow Card
           </h3>
         </div>
-        <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
-          Running
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => dispatch(setActiveTab('analytics'))}
+            className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-brand-500/10 text-brand-500 hover:bg-brand-500/20 border border-brand-500/20 transition cursor-pointer"
+            title="Open City Analytics Dashboard"
+          >
+            <BarChart2 className="w-3 h-3" />
+            <span>Dashboard</span>
+          </button>
+          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            Active
+          </span>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 Scrollbar">
