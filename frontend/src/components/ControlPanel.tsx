@@ -8,6 +8,8 @@ import {
   addEdgeDb,
   deleteNodeDb,
   deleteEdgeDb,
+  setActiveTab,
+  setAutoOpenAnalyticsOnProcess,
 } from '../store/workspaceSlice';
 import {
   setAlgorithm,
@@ -38,6 +40,7 @@ import {
   Terminal as TermIcon,
   Link,
   Share2,
+  BarChart2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -419,6 +422,18 @@ export const ControlPanel: React.FC = () => {
                       >
                         <Play className="w-3.5 h-3.5 fill-white" /> Compute in C++
                       </button>
+
+                      <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 px-1 pt-0.5">
+                        <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={workspace.autoOpenAnalyticsOnProcess}
+                            onChange={(e) => dispatch(setAutoOpenAnalyticsOnProcess(e.target.checked))}
+                            className="w-3 h-3 rounded border-slate-300 dark:border-dark-700 text-brand-500 focus:ring-brand-500 cursor-pointer"
+                          />
+                          <span>Auto-open Analytics Dashboard</span>
+                        </label>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -432,6 +447,14 @@ export const ControlPanel: React.FC = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="clay-inset p-3.5 space-y-3"
               >
+                <button
+                  type="button"
+                  onClick={() => dispatch(setActiveTab('analytics'))}
+                  className="w-full text-xs font-bold py-2 px-3 rounded-xl border border-brand-500/30 text-brand-600 dark:text-brand-400 bg-brand-500/10 hover:bg-brand-500/20 active:scale-95 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  <BarChart2 className="w-3.5 h-3.5" /> View Process Analytics
+                </button>
+
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Step {simulator.currentStepIndex + 1} / {simulator.steps.length}</label>
                   <label className="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">{simulator.speed}ms</label>
