@@ -31,6 +31,8 @@ interface WorkspaceState {
   selectedEdgeId: string | null;
   isLoading: boolean;
   error: string | null;
+  activeTab: 'workspace' | 'analytics';
+  autoOpenAnalyticsOnProcess: boolean;
   history: {
     past: { nodes: CityNode[]; edges: CityEdge[] }[];
     future: { nodes: CityNode[]; edges: CityEdge[] }[];
@@ -47,6 +49,8 @@ const initialState: WorkspaceState = {
   selectedEdgeId: null,
   isLoading: false,
   error: null,
+  activeTab: 'workspace',
+  autoOpenAnalyticsOnProcess: true,
   history: {
     past: [],
     future: [],
@@ -182,6 +186,12 @@ const workspaceSlice = createSlice({
         state.edges = next.edges;
       }
     },
+    setActiveTab: (state, action: PayloadAction<'workspace' | 'analytics'>) => {
+      state.activeTab = action.payload;
+    },
+    setAutoOpenAnalyticsOnProcess: (state, action: PayloadAction<boolean>) => {
+      state.autoOpenAnalyticsOnProcess = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -268,5 +278,5 @@ const workspaceSlice = createSlice({
   },
 });
 
-export const { selectNode, selectEdge, clearWorkspace, undo, redo } = workspaceSlice.actions;
+export const { selectNode, selectEdge, clearWorkspace, undo, redo, setActiveTab, setAutoOpenAnalyticsOnProcess } = workspaceSlice.actions;
 export default workspaceSlice.reducer;
