@@ -1,3 +1,4 @@
 {
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.sourceDirectory": "C:/Users/prabh/OneDrive/Documents/GitHub/smart-city-dsa-simulator/backend"
 }
