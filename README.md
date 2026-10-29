@@ -16,7 +16,7 @@ Designed to simulate city infrastructure (roads, grids, water, rails) at massive
 - **Apple-Level Visual Data Streams:** Organic Bezier-curved edges with high-performance glowing SVG data packets pulsing sequentially along computed routes. 
 - **Synchronized Audio Tracing:** Integrated Web Audio API synchronization that plays futuristic UI sweep tones during algorithm steps and a success arpeggio when paths are resolved.
 - **Neumorphic & Claymorphic Aesthetic:** An ultra-premium "Claymorphic" user interface using Tailwind CSS and Framer Motion for deep shadows, tactile controls, and immersive dark/light themes.
-- **Enterprise Analytics Dashboard:** Performance metrics comparing execution times, peak RSS memory consumption, and infrastructure counts plotted responsively using Recharts.
+- **Enterprise Analytics & Telemetry Suite:** Real-time diagnostics featuring transit waypoint route timelines, microsecond execution benchmarks, peak memory usage, infrastructure donut distribution, and step audit trace logs.
 - **Robust Testing & CI/CD Pipeline:** Fully automated GitHub Actions workflows executing comprehensive C++ GoogleTest backend suites (BFS, DFS, A*, Bellman-Ford) and React component Vitests.
 - **SaaS-Grade DevOps Integration:** Single-command setup using Docker Compose (Nginx, C++ Pistache Server, Postgres Alpine).
 - **Undo/Redo & Import/Export:** Time-travel workspace edits with full CSV and JSON schema imports/exports.
