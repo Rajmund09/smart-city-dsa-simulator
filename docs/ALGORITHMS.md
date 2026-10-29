@@ -101,3 +101,13 @@ This document lists all 15 algorithms implemented inside the C++20 Core Algorith
 - **Time Complexity:** $\mathcal{O}(S \cdot V)$ (Steps $\times$ Nodes)
 - **Space Complexity:** $\mathcal{O}(V)$
 - **Purpose:** Physics-inspired optimization that accepts worse moves with a Boltzmann probability to escape local minima. Useful for route search under severe congestion.
+
+---
+
+## 6. Real-Time Telemetry & Execution Diagnostics
+
+All 16 algorithms pipe operations through the unified `AlgorithmResult` struct in C++20, supplying telemetry to the redesigned frontend analytics dashboard:
+* **Microsecond Benchmarks:** Measured via `std::chrono::high_resolution_clock`.
+* **Memory Footprint:** Peak Linux VmRSS resident set size recorded with each run.
+* **Step Audit Stream:** Step-by-step queue pops, edge examinations, relaxations, and capacity augmentations.
+* **Transit Waypoint Timelines:** Resolved route sequences with GPS weights and facility classifications.
