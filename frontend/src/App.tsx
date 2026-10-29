@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { store } from './store/store';
+import { store, useAppSelector, useAppDispatch } from './store/store';
+import { setActiveTab } from './store/workspaceSlice';
 import { ControlPanel } from './components/ControlPanel';
 import { GraphWorkspace } from './components/GraphWorkspace';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
@@ -18,8 +19,69 @@ const queryClient = new QueryClient({
 });
 
 const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'workspace' | 'analytics'>('workspace');
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector((state) => state.workspace.activeTab);
+  const autoOpenAnalyticsOnProcess = useAppSelector((state) => state.workspace.autoOpenAnalyticsOnProcess);
+  const simulator = useAppSelector((state) => state.simulator);
   const [darkMode, setDarkMode] = useState(true); // Dark mode by default
+
+  // Monitor simulation lifecycle to auto-open analytics ONLY when process animation finishes
+  const wasRunningRef = useRef(false);
+  const wasComputingRef = useRef(false);
+
+  useEffect(() => {
+    if (simulator.isComputing) {
+      wasComputingRef.current = true;
+    }
+    if (simulator.isRunning) {
+      wasRunningRef.current = true;
+    }
+
+    // Traversal completed all steps and stopped running
+    if (
+      wasRunningRef.current &&
+      !simulator.isRunning &&
+      !simulator.isPaused &&
+      simulator.steps.length > 0 &&
+      simulator.currentStepIndex === simulator.steps.length - 1
+    ) {
+      wasRunningRef.current = false;
+      wasComputingRef.current = false;
+
+      if (autoOpenAnalyticsOnProcess) {
+        const timer = setTimeout(() => {
+          dispatch(setActiveTab('analytics'));
+        }, 1100);
+        return () => clearTimeout(timer);
+      }
+    }
+
+    // Direct solver without multi-step animation
+    if (
+      wasComputingRef.current &&
+      !simulator.isComputing &&
+      !simulator.isRunning &&
+      simulator.steps.length === 0 &&
+      simulator.executionTimeMs > 0
+    ) {
+      wasComputingRef.current = false;
+      if (autoOpenAnalyticsOnProcess) {
+        const timer = setTimeout(() => {
+          dispatch(setActiveTab('analytics'));
+        }, 900);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [
+    simulator.isRunning,
+    simulator.isPaused,
+    simulator.isComputing,
+    simulator.steps.length,
+    simulator.currentStepIndex,
+    simulator.executionTimeMs,
+    autoOpenAnalyticsOnProcess,
+    dispatch,
+  ]);
 
   // Sync dark class on html element for Tailwind
   useEffect(() => {
@@ -41,10 +103,12 @@ const AppContent: React.FC = () => {
   return (
     <div className="w-screen h-screen relative bg-slate-50 dark:bg-dark-950 transition-colors duration-300 overflow-hidden text-slate-800 dark:text-slate-200">
       
-      {/* Floating Left Control Panel */}
-      <ControlPanel />
+      {/* Floating Left Control Panel - only on simulation canvas to keep analytics expansive and unblocked */}
+      <AnimatePresence>
+        {activeTab === 'workspace' && <ControlPanel />}
+      </AnimatePresence>
 
-      {/* Floating Right Algorithm Trace Panel */}
+      {/* Floating Right Algorithm Trace Panel - only on simulation canvas */}
       <AnimatePresence>
         {activeTab === 'workspace' && <AlgorithmFlowPanel />}
       </AnimatePresence>
@@ -57,7 +121,7 @@ const AppContent: React.FC = () => {
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => dispatch(setActiveTab(tab.id))}
               className={`w-10 h-10 rounded-xl flex items-center justify-center relative cursor-pointer group transition-colors duration-200 ${
                 isActive ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-200'
               }`}
@@ -115,7 +179,7 @@ const AppContent: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="w-full h-full pt-4 pl-88 pr-4 pb-28"
+              className="w-full h-full"
             >
               <AnalyticsDashboard />
             </motion.div>
