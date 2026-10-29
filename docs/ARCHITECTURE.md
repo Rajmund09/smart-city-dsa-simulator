@@ -43,6 +43,8 @@ Constructed using React 18 and TypeScript with modular layers:
 - **Redux Toolkit:** Centralized store managing nodes/edges state, active selections, and coordinate mutations. Houses the undo/redo stack.
 - **React Query (TanStack):** Handles network fetching and caching of graph metrics, performance aggregates, and list structures.
 - **React Flow:** High-performance Canvas renderer utilizing viewport-aware virtualization to support interactive layouts.
+- **Decoupled Analytics View:** Full-width dedicated telemetry console with safe-area bottom clearances, transit waypoint timelines, and C++ compute benchmark charts.
+- **Simulation Lifecycle Synchronization:** Auto-open observer hook monitors step progression and defers navigation until traversal animation and success audio cues complete.
 
 ---
 
